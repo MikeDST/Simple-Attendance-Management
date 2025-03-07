@@ -1,6 +1,6 @@
 package com.attendance.Controller;
 
-import com.attendance.DTO.UserSignInDTO;
+import com.attendance.DTO.LogInDTO;
 import com.attendance.Entity.AppUser;
 import com.attendance.Repository.UserRepository;
 import com.attendance.authen.AuthenticationService;
@@ -35,11 +35,11 @@ public class UserController {
         return ResponseEntity.ok(userRepository.saveAndFlush(request));
     }
 
-    @PostMapping("/signin")
-    public ResponseEntity<Object> signin(@RequestBody UserSignInDTO userSignInDTO, HttpSession session)
+    @PostMapping("/login")
+    public ResponseEntity<Object> login(@RequestBody LogInDTO userLogInDTO, HttpSession session)
     {
         // Get authentication
-        Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(userSignInDTO.getUserName(), userSignInDTO.getPassword()));
+        Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(userLogInDTO.getUserName(), userLogInDTO.getPassword()));
         SecurityContextHolder.getContext().setAuthentication(authentication);
         // Store in session
         session.setAttribute("SPRING_SECURITY_CONTEXT", SecurityContextHolder.getContext());

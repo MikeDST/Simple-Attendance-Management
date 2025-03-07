@@ -1,25 +1,17 @@
 package com.attendance.DTO;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 
-import java.util.UUID;
-
 @RequiredArgsConstructor
 @AllArgsConstructor
 @Getter
 @Setter
-public class UserRegisterDTO {
-    @NotNull
-    @JsonProperty("name")
-    private String name;
-
+public class RegisterDTO {
     @NotNull
     @JsonProperty("username")
     private String username;
@@ -32,4 +24,16 @@ public class UserRegisterDTO {
     @NotNull
     @JsonProperty("password")
     private String password;
+
+    @NotNull
+    @JsonProperty("firstname")
+    private String firstName;
+
+    @NotNull
+    @JsonProperty("lastname")
+    private String lastName;
+
+    @NotNull
+    @JsonProperty("phone")
+    private String phone;
 }
