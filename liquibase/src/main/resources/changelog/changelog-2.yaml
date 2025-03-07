@@ -1,0 +1,146 @@
+databaseChangeLog:
+  - changeSet:
+      id: 3
+      author: MikeDST
+      preConditions:
+        - onFail: MARK_RAN
+          not:
+            tableExists:
+              tableName: beans
+      changes:
+        - createTable:
+            tableName: beans
+            columns:
+              - column:
+                  name: id
+                  type: UUID
+                  constraints:
+                    primaryKey: true
+                    defaultValueComputed: "uuid_generate_v4()"
+              - column:
+                  name: name
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: in_stock
+                  type: BOOLEAN
+                  constraints:
+                    nullable: false
+                    defaultValue: true
+              - column:
+                  name: price
+                  type: DOUBLE
+                  constraints:
+                    nullable: false
+              - column:
+                  name: sold
+                  type: INTEGER
+                  constraints:
+                    nullable: false
+                    defaultValueNumeric: 0
+              - column:
+                  name: publish_date
+                  type: DATETIME
+                  constraints:
+                    nullable: false
+  - changeSet:
+      id: 4
+      author: MikeDST
+      changes:
+        - insert:
+            tableName: beans
+            columns:
+              - column:
+                  name: id
+                  valueComputed: "uuid_generate_v4()"
+              - column:
+                  name: name
+                  value: "Dusk Bean"
+              - column:
+                  name: in_stock
+                  valueBoolean: true
+              - column:
+                  name: price
+                  valueNumeric: 19.67
+              - column:
+                  name: sold
+                  valueNumeric: 0
+              - column:
+                  name: publish_date
+                  value: "2024-12-26T00:00:00"
+  - changeSet:
+      id: 5
+      author: MikeDST
+      changes:
+        - insert:
+            tableName: beans
+            columns:
+              - column:
+                  name: id
+                  valueComputed: "uuid_generate_v4()"
+              - column:
+                  name: name
+                  value: "Nian Bean"
+              - column:
+                  name: in_stock
+                  valueBoolean: true
+              - column:
+                  name: price
+                  valueNumeric: 19.67
+              - column:
+                  name: sold
+                  valueNumeric: 0
+              - column:
+                  name: publish_date
+                  value: "2024-12-26T00:00:00"
+  - changeSet:
+      id: 6
+      author: MikeDST
+      changes:
+        - insert:
+            tableName: beans
+            columns:
+              - column:
+                  name: id
+                  valueComputed: "uuid_generate_v4()"
+              - column:
+                  name: name
+                  value: "Ling Bean"
+              - column:
+                  name: in_stock
+                  valueBoolean: true
+              - column:
+                  name: price
+                  valueNumeric: 19.67
+              - column:
+                  name: sold
+                  valueNumeric: 0
+              - column:
+                  name: publish_date
+                  value: "2024-12-26T00:00:00"
+  - changeSet:
+      id: 7
+      author: MikeDST
+      changes:
+        - insert:
+            tableName: beans
+            columns:
+              - column:
+                  name: id
+                  valueComputed: "uuid_generate_v4()"
+              - column:
+                  name: name
+                  value: "Shu Bean"
+              - column:
+                  name: in_stock
+                  valueBoolean: true
+              - column:
+                  name: price
+                  valueNumeric: 19.67
+              - column:
+                  name: sold
+                  valueNumeric: 0
+              - column:
+                  name: publish_date
+                  value: "2024-12-26T00:00:00"

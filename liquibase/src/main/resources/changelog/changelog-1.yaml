@@ -1,0 +1,50 @@
+databaseChangeLog:
+  - changeSet:
+      id: 1
+      author: MikeDST
+      preConditions:
+        - onFail: MARK_RAN
+          not:
+            tableExists:
+              tableName: employees
+      changes:
+        - createTable:
+            tableName: employees
+            columns:
+              - column:
+                  name: id
+                  type: BIGINT
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+              - column:
+                  name: first_name
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: last_name
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: email_address
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: false
+  - changeSet:
+      id: 2
+      author: MikeDST
+      changes:
+        - insert:
+            tableName: employees
+            columns:
+              - column:
+                  name: first_name
+                  value: "Mikey"
+              - column:
+                  name: last_name
+                  value: "The Mu"
+              - column:
+                  name: email_address
+                  value: "mikeythemu@rhodesisland.com"

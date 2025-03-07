@@ -1,0 +1,69 @@
+databaseChangeLog:
+  - changeSet:
+      id: 3
+      author: MikeDST
+      preConditions:
+        - onFail: MARK_RAN
+          not:
+            tableExists:
+              tableName: users
+      changes:
+        - createTable:
+            tableName: users
+            columns:
+              - column:
+                  name: id
+                  type: UUID
+                  constraints:
+                    primaryKey: true
+                    defaultValueComputed: "uuid_generate_v4()"
+              - column:
+                  name: name
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: username
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: email
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: password
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: role
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: false
+  - changeSet:
+      id: 8
+      author: MikeDST
+      changes:
+        - insert:
+            tableName: users
+            columns:
+              - column:
+                  name: id
+                  valueComputed: "uuid_generate_v4()"
+              - column:
+                  name: name
+                  value: "MikeDST"
+              - column:
+                  name: username
+                  value: "mikedsttheadmin"
+              - column:
+                  name: email
+                  value: "mikedst@admin.com"
+              - column:
+                  name: password
+                  value: "$2a$12$iHt6emfLK5/TLGrlDYfUQ.3U1.IzqhUWdCJ80XylQDGZUNGU6qjg."
+              - column:
+                  name: role
+                  value: "ADMIN"
