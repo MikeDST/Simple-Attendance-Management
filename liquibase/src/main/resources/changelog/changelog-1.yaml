@@ -5,18 +5,41 @@ databaseChangeLog:
       preConditions:
         - onFail: MARK_RAN
           not:
-            tableExists:
-              tableName: employees
+            and:
+              - tableExists:
+                  tableName: users
+              - tableExists:
+                  tableName: classes
+              - tableExists:
+                  tableName: subjects
+              - tableExists:
+                  tableName: attendances
       changes:
+        # User table
         - createTable:
-            tableName: employees
+            tableName: users
             columns:
               - column:
                   name: id
-                  type: BIGINT
-                  autoIncrement: true
+                  type: UUID
                   constraints:
                     primaryKey: true
+                    defaultValueComputed: "uuid_generate_v4()"
+              - column:
+                  name: user_name
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: email
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: password
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: false
               - column:
                   name: first_name
                   type: VARCHAR(255)
@@ -28,17 +51,150 @@ databaseChangeLog:
                   constraints:
                     nullable: false
               - column:
-                  name: email_address
+                  name: phone
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: true
+              - column:
+                  name: role
                   type: VARCHAR(255)
                   constraints:
                     nullable: false
+
+        # Subject table
+        - createTable:
+            tableName: subjects
+            columns:
+              - column:
+                  name: id
+                  type: UUID
+                  constraints:
+                    primaryKey: true
+                    defaultValueComputed: "uuid_generate_v4()"
+              - column:
+                  name: name
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: false
+
+        # Class table
+        - createTable:
+            tableName: classes
+            columns:
+              - column:
+                  name: id
+                  type: UUID
+                  constraints:
+                    primaryKey: true
+                    defaultValueComputed: "uuid_generate_v4()"
+              - column:
+                  name: name
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: teacher_id
+                  type: UUID
+                  constraints:
+                    nullable: false
+              - column:
+                  name: subject_id
+                  type: UUID
+                  constraints:
+                    nullable: false
+              - column:
+                  name: start_date
+                  type: DATETIME
+                  constraints:
+                    nullable: false
+              - addForeignKeyConstraint:
+                  constraintName: fk_class_teacher
+                  baseTableName: classes
+                  baseColumnNames: teacher_id
+                  referencedTableName: users
+                  referencedColumnNames: id
+                  onDelete: CASCADE
+                  onUpdate: RESTRICT
+              - addForeignKeyConstraint:
+                  constraintName: fk_class_subject
+                  baseTableName: classes
+                  baseColumnNames: subject_id
+                  referencedTableName: subjects
+                  referencedColumnNames: id
+                  onDelete: CASCADE
+                  onUpdate: RESTRICT
+        # Attendance table
+        - createTable:
+            tableName: attendances
+            columns:
+              - column:
+                  name: id
+                  type: UUID
+                  constraints:
+                    primaryKey: true
+                    defaultValueComputed: "uuid_generate_v4()"
+              - column:
+                  name: student_id
+                  type: UUID
+                  constraints:
+                    nullable: false
+              - column:
+                  name: class_id
+                  type: UUID
+                  constraints:
+                    nullable: false
+              - column:
+                  name: join_date
+                  type: DATETIME
+                  constraints:
+                    nullable: false
+              - column:
+                  name: grade
+                  type: DOUBLE
+                  constraints:
+                    nullable: false
+              - column:
+                  name: is_attended
+                  type: BOOLEAN
+                  constraints:
+                    nullable: false
+                    defaultValue: true
+              - addForeignKeyConstraint:
+                  constraintName: fk_attendance_student
+                  baseTableName: attendance
+                  baseColumnNames: student_id
+                  referencedTableName: users
+                  referencedColumnNames: id
+                  onDelete: CASCADE
+                  onUpdate: RESTRICT
+              - addForeignKeyConstraint:
+                  constraintName: fk_attendance_class
+                  baseTableName: attendance
+                  baseColumnNames: class_id
+                  referencedTableName: classes
+                  referencedColumnNames: id
+                  onDelete: CASCADE
+                  onUpdate: RESTRICT
+
   - changeSet:
       id: 2
       author: MikeDST
       changes:
         - insert:
-            tableName: employees
+            tableName: users
             columns:
+              - column:
+                  name: id
+                  valueComputed: "uuid_generate_v4()"
+              - column:
+                  name: user_name
+                  value: "mikedsttheadmin"
+              - column:
+                  name: email
+                  value: "mikedst@admin.com"
+              - column:
+                  name: password
+                  value: "$2a$12$iHt6emfLK5/TLGrlDYfUQ.3U1.IzqhUWdCJ80XylQDGZUNGU6qjg."
               - column:
                   name: first_name
                   value: "Mikey"
@@ -46,5 +202,8 @@ databaseChangeLog:
                   name: last_name
                   value: "The Mu"
               - column:
-                  name: email_address
-                  value: "mikeythemu@rhodesisland.com"
+                  name: phone
+                  value: "0836912045"
+              - column:
+                  name: role
+                  value: "ADMIN"

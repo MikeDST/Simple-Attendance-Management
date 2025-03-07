@@ -39,7 +39,7 @@ public class UserController {
     public ResponseEntity<Object> signin(@RequestBody UserSignInDTO userSignInDTO, HttpSession session)
     {
         // Get authentication
-        Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(userSignInDTO.getUsername(), userSignInDTO.getPassword()));
+        Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(userSignInDTO.getUserName(), userSignInDTO.getPassword()));
         SecurityContextHolder.getContext().setAuthentication(authentication);
         // Store in session
         session.setAttribute("SPRING_SECURITY_CONTEXT", SecurityContextHolder.getContext());

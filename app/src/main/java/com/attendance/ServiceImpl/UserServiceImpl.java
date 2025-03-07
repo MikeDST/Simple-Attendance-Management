@@ -23,7 +23,7 @@ public class UserServiceImpl implements UserService {
         }
 
         AppUser appUser = new AppUser();
-        appUser.setUsername(username);
+        appUser.setUserName(username);
         appUser.setEmail(email);
         appUser.setPassword(passwordEncoder.encode(password));
         appUser.setRole("USER");

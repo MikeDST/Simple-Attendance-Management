@@ -14,7 +14,7 @@ import lombok.Setter;
 public class UserSignInDTO {
     @NotNull
     @JsonProperty("username")
-    private String username;
+    private String userName;
 
     @NotNull
     @JsonProperty("password")
