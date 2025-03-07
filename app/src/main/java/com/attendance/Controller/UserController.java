@@ -19,10 +19,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import org.springframework.security.core.GrantedAuthority;
-
-import java.util.Collection;
-
 
 @RestController
 public class UserController {
@@ -48,12 +44,12 @@ public class UserController {
         // Store in session
         session.setAttribute("SPRING_SECURITY_CONTEXT", SecurityContextHolder.getContext());
 
-        return new ResponseEntity<>("User signed-in successfully!. Session ID: " + session.getId(), HttpStatus.OK);
+        return new ResponseEntity<>("Signed-in successfully!", HttpStatus.OK);
     }
 
     @PostMapping("/logout")
     public ResponseEntity<String> logout(HttpServletRequest request) {
         request.getSession().invalidate();
-        return ResponseEntity.ok("Logged out successfully.");
+        return ResponseEntity.ok("Logged out successfully!");
     }
 }
