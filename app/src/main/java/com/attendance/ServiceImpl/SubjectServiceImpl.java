@@ -60,6 +60,6 @@ public class SubjectServiceImpl implements SubjectService {
             throw new ResourceNotFoundException(message.NO_SUBJECT_FOUND);
         }
 
-        return subjects.stream().map(mapStructMapper::toDto).collect(Collectors.toList());
+        return subjects.stream().map(mapStructMapper.MAPPER::toDto).collect(Collectors.toList());
     }
 }

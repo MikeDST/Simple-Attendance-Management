@@ -15,7 +15,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public AppUser registerUser(String username, String email, String password) {
-        if (userRepository.findByUsername(username).isPresent()) {
+        if (userRepository.findByUserName(username).isPresent()) {
             throw new RuntimeException("Username already taken");
         }
         if (userRepository.findByEmail(email).isPresent()) {

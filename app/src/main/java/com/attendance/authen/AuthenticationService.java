@@ -17,7 +17,7 @@ public class AuthenticationService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        Optional<AppUser> user = userRepository.findByUsername(username);
+        Optional<AppUser> user = userRepository.findByUserName(username);
         if(user.isPresent()){
             var userObj = user.get();
             return org.springframework.security.core.userdetails.User.builder()
