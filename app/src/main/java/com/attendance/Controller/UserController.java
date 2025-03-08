@@ -3,10 +3,12 @@ package com.attendance.Controller;
 import com.attendance.Common.Message;
 import com.attendance.Common.SuccessDetails;
 import com.attendance.DTO.LogInDTO;
+import com.attendance.DTO.RegisterDTO;
 import com.attendance.DTO.UserDTO;
 import com.attendance.Entity.AppUser;
 import com.attendance.Exception.ResourceNotFoundException;
 import com.attendance.Repository.UserRepository;
+import com.attendance.ServiceInterface.UserService;
 import com.attendance.authen.AuthenticationService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
@@ -31,6 +33,8 @@ import java.util.Date;
 @RestController
 public class UserController {
     @Autowired
+    private UserService userService;
+    @Autowired
     private AuthenticationManager authenticationManager;
     private AuthenticationService authenticationService;
     private UserRepository userRepository;
@@ -38,10 +42,16 @@ public class UserController {
     private final Message message = new Message();
 
     @PostMapping("/register")
-    public ResponseEntity<Object> register(@RequestBody @Valid AppUser request) {
-        request.setPassword(passwordEncoder.encode(request.getPassword()));
-        request.setRole("STUDENT");
-        return ResponseEntity.ok(userRepository.saveAndFlush(request));
+    public ResponseEntity<Object> register(@RequestBody @Valid RegisterDTO registerDTO) {
+//        request.setPassword(passwordEncoder.encode(request.getPassword()));
+//        request.setRole("STUDENT");
+//        return ResponseEntity.ok(userRepository.saveAndFlush(request));
+        userService.registerUser(registerDTO);
+        SuccessDetails successDetails = new SuccessDetails(
+                new Date(),
+                message.USER_CREATED,
+                null);
+        return new ResponseEntity<>(successDetails, HttpStatus.CREATED);
     }
 
     @PostMapping("/login")
@@ -64,7 +74,7 @@ public class UserController {
 
     @GetMapping("/users")
     public ResponseEntity<Object> getAllUsers() throws ResourceNotFoundException {
-        Collection<AppUser> users = userRepository.findAll();
+        Collection<UserDTO> users = userService.getUsers();
         SuccessDetails successDetails = new SuccessDetails(
                 new Date(),
                 message.OPERATION_COMPLETED,

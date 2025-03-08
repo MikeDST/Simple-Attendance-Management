@@ -1,6 +1,7 @@
 package com.attendance.ServiceImpl;
 
 import com.attendance.Common.Message;
+import com.attendance.DTO.RegisterDTO;
 import com.attendance.DTO.UserDTO;
 import com.attendance.Entity.AppUser;
 import com.attendance.Exception.ResourceNotFoundException;
@@ -24,21 +25,15 @@ public class UserServiceImpl implements UserService {
     private final Message message = new Message();
 
     @Override
-    public AppUser registerUser(String username, String email, String password) {
-        if (userRepository.findByUserName(username).isPresent()) {
+    public void registerUser(RegisterDTO registerDTO) {
+        if (userRepository.findByUserName(registerDTO.getUsername()).isPresent()) {
             throw new RuntimeException("Username already taken");
         }
-        if (userRepository.findByEmail(email).isPresent()) {
+        if (userRepository.findByEmail(registerDTO.getEmail()).isPresent()) {
             throw new RuntimeException("Email already in use");
         }
-
-        AppUser appUser = new AppUser();
-        appUser.setUserName(username);
-        appUser.setEmail(email);
-        appUser.setPassword(passwordEncoder.encode(password));
-        appUser.setRole("USER");
-
-        return userRepository.save(appUser);
+        registerDTO.setPassword(passwordEncoder.encode(registerDTO.getPassword()));
+        userRepository.saveAndFlush(mapStructMapper.MAPPER.registerToEntity(registerDTO));
     }
 
     @Override
@@ -67,7 +62,6 @@ public class UserServiceImpl implements UserService {
     @Override
     public Collection<UserDTO> getUsers() throws ResourceNotFoundException {
         Collection<AppUser> users = userRepository.findAll();
-
         if (users.isEmpty()) {
             throw new ResourceNotFoundException(message.NO_USER_FOUND);
         }

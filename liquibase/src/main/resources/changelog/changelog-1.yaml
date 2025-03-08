@@ -1,20 +1,34 @@
 databaseChangeLog:
+  # CREATE TABLES
   - changeSet:
-      id: 1
+      id: 3.3
       author: MikeDST
       preConditions:
         - onFail: MARK_RAN
-          not:
-            and:
-              - tableExists:
-                  tableName: users
-              - tableExists:
-                  tableName: classes
-              - tableExists:
-                  tableName: subjects
-              - tableExists:
-                  tableName: attendances
+          and:
+            - tableExists:
+                tableName: users
+            - tableExists:
+                tableName: classes
+            - tableExists:
+                tableName: subjects
+            - tableExists:
+                tableName: attendances
       changes:
+        # Drop tables
+        - dropTable:
+            tableName: subjects
+            cascadeConstraints: true
+        - dropTable:
+            tableName: attendances
+            cascadeConstraints: true
+        - dropTable:
+            tableName: classes
+            cascadeConstraints: true
+        - dropTable:
+            tableName: users
+            cascadeConstraints: true
+
         # User table
         - createTable:
             tableName: users
@@ -58,6 +72,7 @@ databaseChangeLog:
               - column:
                   name: role
                   type: VARCHAR(255)
+                  defaultValue: 'STUDENT'
                   constraints:
                     nullable: false
 
@@ -123,6 +138,7 @@ databaseChangeLog:
                   referencedColumnNames: id
                   onDelete: CASCADE
                   onUpdate: RESTRICT
+
         # Attendance table
         - createTable:
             tableName: attendances
@@ -152,7 +168,7 @@ databaseChangeLog:
                   name: grade
                   type: DOUBLE
                   constraints:
-                    nullable: false
+                    nullable: true
               - column:
                   name: is_attended
                   type: BOOLEAN
@@ -176,10 +192,7 @@ databaseChangeLog:
                   onDelete: CASCADE
                   onUpdate: RESTRICT
 
-  - changeSet:
-      id: 2
-      author: MikeDST
-      changes:
+  # INSERT
         - insert:
             tableName: users
             columns:
@@ -207,3 +220,48 @@ databaseChangeLog:
               - column:
                   name: role
                   value: "ADMIN"
+        - insert:
+            tableName: subjects
+            columns:
+              - column:
+                  name: id
+                  valueComputed: "uuid_generate_v4()"
+              - column:
+                  name: name
+                  value: "Math"
+        - insert:
+            tableName: subjects
+            columns:
+              - column:
+                  name: id
+                  valueComputed: "uuid_generate_v4()"
+              - column:
+                  name: name
+                  value: "English"
+        - insert:
+            tableName: subjects
+            columns:
+              - column:
+                  name: id
+                  valueComputed: "uuid_generate_v4()"
+              - column:
+                  name: name
+                  value: "Science"
+        - insert:
+            tableName: subjects
+            columns:
+              - column:
+                  name: id
+                  valueComputed: "uuid_generate_v4()"
+              - column:
+                  name: name
+                  value: "Music"
+        - insert:
+            tableName: subjects
+            columns:
+              - column:
+                  name: id
+                  valueComputed: "uuid_generate_v4()"
+              - column:
+                  name: name
+                  value: "History"
