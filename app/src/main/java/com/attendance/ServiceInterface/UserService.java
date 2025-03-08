@@ -1,7 +1,16 @@
 package com.attendance.ServiceInterface;
 
+import com.attendance.DTO.UserDTO;
 import com.attendance.Entity.AppUser;
+import com.attendance.Exception.ResourceNotFoundException;
+
+import java.util.Collection;
+import java.util.UUID;
 
 public interface UserService {
-    public AppUser registerUser(String username, String email, String password);
+    AppUser registerUser(String username, String email, String password);
+    void updateUser(UUID userId, UserDTO userDTO) throws ResourceNotFoundException;
+    void deleteUser(UUID userId) throws ResourceNotFoundException;
+    UserDTO getUser(UUID userId) throws ResourceNotFoundException;
+    Collection<UserDTO> getUsers() throws ResourceNotFoundException;
 }

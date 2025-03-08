@@ -2,9 +2,9 @@ package com.attendance.Controller;
 
 import com.attendance.Common.Message;
 import com.attendance.Common.SuccessDetails;
-import com.attendance.DTO.SubjectDTO;
+import com.attendance.DTO.AttendanceDTO;
 import com.attendance.Exception.ResourceNotFoundException;
-import com.attendance.ServiceInterface.SubjectService;
+import com.attendance.ServiceInterface.AttendanceService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -16,60 +16,60 @@ import java.util.Date;
 import java.util.UUID;
 
 @RestController
-public class SubjectController {
+public class AttendanceController {
     @Autowired
-    private SubjectService subjectService;
+    private AttendanceService attendanceService;
     private final SuccessDetails successDetails = new SuccessDetails();
     private final Message message = new Message();
 
-    @GetMapping("/subjects")
-    public ResponseEntity<Object> getAllSubjects() throws ResourceNotFoundException {
-        Collection<SubjectDTO> subjects = subjectService.getSubjects();
+    @GetMapping("/attendances")
+    public ResponseEntity<Object> getAllAttendances() throws ResourceNotFoundException {
+        Collection<AttendanceDTO> attendances = attendanceService.getAttendances();
         SuccessDetails successDetails = new SuccessDetails(
                 new Date(),
                 message.OPERATION_COMPLETED,
-                subjects
+                attendances
         );
         return new ResponseEntity<>(successDetails, HttpStatus.OK);
     }
 
-    @GetMapping("/subjects/{id}")
-    public ResponseEntity<Object> getSubject(@PathVariable("id") UUID id) throws ResourceNotFoundException {
-        SubjectDTO subject = subjectService.getSubject(id);
+    @GetMapping("/attendances/{id}")
+    public ResponseEntity<Object> getAttendance(@PathVariable("id") UUID id) throws ResourceNotFoundException {
+        AttendanceDTO attendance = attendanceService.getAttendance(id);
         SuccessDetails successDetails = new SuccessDetails(
                 new Date(),
                 message.OPERATION_COMPLETED,
-                subject
+                attendance
         );
         return new ResponseEntity<>(successDetails, HttpStatus.OK);
     }
 
-    @PostMapping("/subject/create")
-    public ResponseEntity<Object> createSubject(@RequestBody @Valid SubjectDTO subjectDTO) {
-        subjectService.createSubject(subjectDTO);
+    @PostMapping("/attendance/create")
+    public ResponseEntity<Object> createAttendance(@RequestBody @Valid AttendanceDTO attendanceDTO) {
+        attendanceService.createAttendance(attendanceDTO);
         SuccessDetails successDetails = new SuccessDetails(
                 new Date(),
-                message.SUBJECT_CREATED,
+                message.ATTENDANCE_CREATED,
                 null);
         return new ResponseEntity<>(successDetails, HttpStatus.CREATED);
     }
 
-    @PutMapping(value = "/subject/update/{id}")
-    public ResponseEntity<Object> updateSubject(@PathVariable("id") UUID id, @RequestBody @Valid SubjectDTO subjectDTO) throws ResourceNotFoundException {
-        subjectService.updateSubject(id, subjectDTO);
+    @PutMapping("/attendance/update/{id}")
+    public ResponseEntity<Object> updateAttendance(@PathVariable("id") UUID id, @RequestBody @Valid AttendanceDTO attendanceDTO) throws ResourceNotFoundException {
+        attendanceService.updateAttendance(id, attendanceDTO);
         SuccessDetails successDetails = new SuccessDetails(
                 new Date(),
-                message.SUBJECT_UPDATED,
+                message.ATTENDANCE_UPDATED,
                 null);
         return new ResponseEntity<>(successDetails, HttpStatus.OK);
     }
 
-    @DeleteMapping(value = "/subject/delete/{id}")
-    public ResponseEntity<Object> deleteSubject(@PathVariable("id") UUID id) throws ResourceNotFoundException {
-        subjectService.deleteSubject(id);
+    @DeleteMapping("/attendance/delete/{id}")
+    public ResponseEntity<Object> deleteAttendance(@PathVariable("id") UUID id) throws ResourceNotFoundException {
+        attendanceService.deleteAttendance(id);
         SuccessDetails successDetails = new SuccessDetails(
                 new Date(),
-                message.SUBJECT_DELETED,
+                message.ATTENDANCE_DELETED,
                 null);
         return new ResponseEntity<>(successDetails, HttpStatus.OK);
     }
