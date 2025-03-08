@@ -6,7 +6,6 @@ import com.attendance.Exception.ResourceNotFoundException;
 import java.util.Collection;
 import java.util.UUID;
 
-
 public interface BeanService {
     void createBean(BeanDTO beanDTO);
     void updateBean(UUID beanId, BeanDTO beanDTO) throws ResourceNotFoundException;
