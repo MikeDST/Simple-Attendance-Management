@@ -26,6 +26,15 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         return new ResponseEntity<>(errorDetails, HttpStatus.NOT_FOUND);
     }
 
+    @ExceptionHandler(DuplicateResourceException.class)
+    public ResponseEntity<?> duplicateResourceException(DuplicateResourceException ex, WebRequest request) {
+        ErrorDetails errorDetails = new ErrorDetails(
+                new Date(),
+                ex.getMessage(),
+                request.getDescription(false)
+        );
+        return new ResponseEntity<>(errorDetails, HttpStatus.CONFLICT);
+    }
 
     @Override
     protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex, HttpHeaders headers, HttpStatusCode status, WebRequest request) {

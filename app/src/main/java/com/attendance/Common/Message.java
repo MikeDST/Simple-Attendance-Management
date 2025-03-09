@@ -15,6 +15,10 @@ public class Message {
     public String USER_DELETED = "User has been deleted successfully";
     public String IS_NOT_TEACHER = "This user is not a teacher";
     public String IS_NOT_STUDENT = "This user is not a student";
+    public String USER_NAME_EXIST = "User name already taken";
+    public String EMAIL_EXIST = "Email already in use";
+    public String WRONG_PASSWORD = "Wrong password! Please try again";
+    public String CONFIRM_PASSWORD_FAIL = "Cannot confirm new password! Please try again";
 
 
     // CLASS
