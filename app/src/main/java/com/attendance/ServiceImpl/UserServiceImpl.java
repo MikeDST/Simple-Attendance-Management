@@ -23,7 +23,6 @@ public class UserServiceImpl implements UserService {
     private UserRepository userRepository;
     @Autowired
     private PasswordEncoder passwordEncoder;
-    private MapStructMapper mapStructMapper;
     private final Message message = new Message();
 
     @Override
@@ -35,7 +34,7 @@ public class UserServiceImpl implements UserService {
             throw new RuntimeException("Email already in use");
         }
         registerDTO.setPassword(passwordEncoder.encode(registerDTO.getPassword()));
-        userRepository.saveAndFlush(mapStructMapper.MAPPER.registerToEntity(registerDTO));
+        userRepository.saveAndFlush(MapStructMapper.MAPPER.registerToEntity(registerDTO));
     }
 
     @Override
@@ -50,7 +49,7 @@ public class UserServiceImpl implements UserService {
         }
         createUserDTO.setPassword(passwordEncoder.encode(createUserDTO.getPassword()));
         System.out.println("yooo");
-        userRepository.saveAndFlush(mapStructMapper.MAPPER.createToEntity(createUserDTO));
+        userRepository.saveAndFlush(MapStructMapper.MAPPER.createToEntity(createUserDTO));
     }
 
     @Override
@@ -79,7 +78,7 @@ public class UserServiceImpl implements UserService {
     public UserDTO getUser(UUID userId) throws ResourceNotFoundException {
         AppUser foundUser = userRepository.findById(userId)
                 .orElseThrow(() -> new ResourceNotFoundException(message.USER_NOT_FOUND + userId));
-        return mapStructMapper.MAPPER.toDto(foundUser);
+        return MapStructMapper.MAPPER.toDto(foundUser);
     }
 
     @Override
@@ -89,6 +88,6 @@ public class UserServiceImpl implements UserService {
             throw new ResourceNotFoundException(message.NO_USER_FOUND);
         }
 
-        return users.stream().map(mapStructMapper.MAPPER::toDto).collect(Collectors.toList());
+        return users.stream().map(MapStructMapper.MAPPER::toDto).collect(Collectors.toList());
     }
 }

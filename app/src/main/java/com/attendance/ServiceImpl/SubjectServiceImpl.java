@@ -18,13 +18,12 @@ import java.util.stream.Collectors;
 public class SubjectServiceImpl implements SubjectService {
     @Autowired
     private SubjectRepository subjectRepository;
-    private MapStructMapper mapStructMapper;
     private final Message message = new Message();
 
     @Override
     public void createSubject(SubjectDTO subjectDTO) {
         subjectDTO.setId(null);
-        subjectRepository.saveAndFlush(mapStructMapper.MAPPER.toEntity(subjectDTO));
+        subjectRepository.saveAndFlush(MapStructMapper.MAPPER.toEntity(subjectDTO));
     }
 
     @Override
@@ -47,7 +46,7 @@ public class SubjectServiceImpl implements SubjectService {
     public SubjectDTO getSubject(UUID subjectId) throws ResourceNotFoundException {
         Subject foundSubject = subjectRepository.findById(subjectId)
                 .orElseThrow(() -> new ResourceNotFoundException(message.SUBJECT_NOT_FOUND + subjectId));
-        return mapStructMapper.MAPPER.toDto(foundSubject);
+        return MapStructMapper.MAPPER.toDto(foundSubject);
     }
 
     @Override
@@ -58,6 +57,6 @@ public class SubjectServiceImpl implements SubjectService {
             throw new ResourceNotFoundException(message.NO_SUBJECT_FOUND);
         }
 
-        return subjects.stream().map(mapStructMapper.MAPPER::toDto).collect(Collectors.toList());
+        return subjects.stream().map(MapStructMapper.MAPPER::toDto).collect(Collectors.toList());
     }
 }

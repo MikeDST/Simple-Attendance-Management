@@ -11,8 +11,6 @@ import org.mapstruct.factory.Mappers;
 public interface MapStructMapper {
     MapStructMapper MAPPER = Mappers.getMapper(MapStructMapper.class);
     // Entity to DTO
-    BeanDTO toDto(Bean bean);
-
     UserDTO toDto(AppUser appUser);
 
     ClassDTO toDto(Class aClass);
@@ -22,7 +20,6 @@ public interface MapStructMapper {
     AttendanceDTO toDto(Attendance attendance);
 
     // DTO to Entity
-    Bean toEntity(BeanDTO beanDTO);
     @Mapping(source = "username", target = "userName")
     @Mapping(target = "role", expression = "java(\"STUDENT\")")
     AppUser registerToEntity(RegisterDTO registerDTO);

@@ -16,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Collection;
+import java.util.Objects;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -27,17 +28,22 @@ public class AttendanceServiceImpl implements AttendanceService {
     private UserRepository userRepository;
     @Autowired
     private ClassRepository classRepository;
-    private MapStructMapper mapStructMapper;
     private final Message message = new Message();
+
+    private Boolean isStudent(AppUser user)
+    {
+        return Objects.equals(user.getRole(), "STUDENT");
+    }
 
     @Override
     public void createAttendance(AttendanceEditDTO attendanceEditDTO) throws ResourceNotFoundException {
         AppUser student = userRepository.findById(attendanceEditDTO.getStudentId())
                 .orElseThrow(() -> new ResourceNotFoundException(message.USER_NOT_FOUND));
+        if(!isStudent(student)) throw new ResourceNotFoundException(message.IS_NOT_STUDENT);
         Class aClass = classRepository.findById(attendanceEditDTO.getClassId())
                 .orElseThrow(() -> new ResourceNotFoundException(message.CLASS_NOT_FOUND));
-        // Check isStudent
-        Attendance attendance = mapStructMapper.MAPPER.editToEntity(attendanceEditDTO);
+
+        Attendance attendance = MapStructMapper.MAPPER.editToEntity(attendanceEditDTO);
         attendance.setId(null);
         attendance.setStudent(student);
         attendance.setAClass(aClass);
@@ -51,10 +57,10 @@ public class AttendanceServiceImpl implements AttendanceService {
                 .orElseThrow(() -> new ResourceNotFoundException(message.ATTENDANCE_NOT_FOUND + attendanceId));
         AppUser student = userRepository.findById(attendanceEditDTO.getStudentId())
                 .orElseThrow(() -> new ResourceNotFoundException(message.USER_NOT_FOUND));
+        if(!isStudent(student)) throw new ResourceNotFoundException(message.IS_NOT_STUDENT);
         Class aClass = classRepository.findById(attendanceEditDTO.getClassId())
                 .orElseThrow(() -> new ResourceNotFoundException(message.CLASS_NOT_FOUND));
 
-        // Check isStudent
         foundAttendance.setJoinDate(attendanceEditDTO.getJoinDate());
         foundAttendance.setGrade(attendanceEditDTO.getGrade());
         foundAttendance.setAttended(attendanceEditDTO.isAttended());
@@ -75,7 +81,21 @@ public class AttendanceServiceImpl implements AttendanceService {
     public AttendanceDTO getAttendance(UUID attendanceId) throws ResourceNotFoundException {
         Attendance foundAttendance = attendanceRepository.findById(attendanceId)
                 .orElseThrow(() -> new ResourceNotFoundException(message.ATTENDANCE_NOT_FOUND + attendanceId));
-        return mapStructMapper.MAPPER.toDto(foundAttendance);
+        return MapStructMapper.MAPPER.toDto(foundAttendance);
+    }
+
+    @Override
+    public Collection<AttendanceDTO> getMyAttendances(UUID myId) throws ResourceNotFoundException {
+        AppUser student = userRepository.findById(myId)
+                .orElseThrow(() -> new ResourceNotFoundException(message.USER_NOT_FOUND));
+        if(!isStudent(student)) throw new ResourceNotFoundException(message.IS_NOT_STUDENT);
+
+        Collection<Attendance> attendances = attendanceRepository.findMyAttendances(myId);
+        if (attendances.isEmpty()) {
+            throw new ResourceNotFoundException(message.NO_ATTENDANCE_FOUND);
+        }
+
+        return attendances.stream().map(MapStructMapper.MAPPER::toDto).collect(Collectors.toList());
     }
 
     @Override
@@ -86,6 +106,6 @@ public class AttendanceServiceImpl implements AttendanceService {
             throw new ResourceNotFoundException(message.NO_ATTENDANCE_FOUND);
         }
 
-        return attendances.stream().map(mapStructMapper.MAPPER::toDto).collect(Collectors.toList());
+        return attendances.stream().map(MapStructMapper.MAPPER::toDto).collect(Collectors.toList());
     }
 }

@@ -12,5 +12,6 @@ public interface AttendanceService {
     void updateAttendance(UUID attendanceId, AttendanceEditDTO attendanceEditDTO) throws ResourceNotFoundException;
     void deleteAttendance(UUID attendanceId) throws ResourceNotFoundException;
     AttendanceDTO getAttendance(UUID attendanceId) throws ResourceNotFoundException;
+    Collection<AttendanceDTO> getMyAttendances(UUID myId) throws ResourceNotFoundException;
     Collection<AttendanceDTO> getAttendances() throws ResourceNotFoundException;
 }

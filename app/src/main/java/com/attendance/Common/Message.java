@@ -13,6 +13,8 @@ public class Message {
     public String USER_CREATED = "User has been created successfully";
     public String USER_UPDATED = "User has been updated successfully";
     public String USER_DELETED = "User has been deleted successfully";
+    public String IS_NOT_TEACHER = "This user is not a teacher";
+    public String IS_NOT_STUDENT = "This user is not a student";
 
 
     // CLASS

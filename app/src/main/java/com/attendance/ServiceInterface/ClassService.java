@@ -12,5 +12,6 @@ public interface ClassService {
     void updateClass(UUID classId, ClassEditDTO classEditDTO) throws ResourceNotFoundException;
     void deleteClass(UUID classId) throws ResourceNotFoundException;
     ClassDTO getClass(UUID classId) throws ResourceNotFoundException;
+    Collection<ClassDTO> getMyClasses(UUID myId) throws ResourceNotFoundException;
     Collection<ClassDTO> getClasses() throws ResourceNotFoundException;
 }

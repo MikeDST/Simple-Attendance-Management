@@ -45,6 +45,17 @@ public class ClassController {
         return new ResponseEntity<>(successDetails, HttpStatus.OK);
     }
 
+    @GetMapping("/teacher/classes/{id}")
+    public ResponseEntity<Object> getMyClasses(@PathVariable("id") UUID id) throws ResourceNotFoundException {
+        Collection<ClassDTO> classes = classService.getMyClasses(id);
+        SuccessDetails successDetails = new SuccessDetails(
+                new Date(),
+                message.OPERATION_COMPLETED,
+                classes
+        );
+        return new ResponseEntity<>(successDetails, HttpStatus.OK);
+    }
+
     @PostMapping("/class/create")
     public ResponseEntity<Object> createClass(@RequestBody @Valid ClassEditDTO classEditDTO) throws ResourceNotFoundException {
         classService.createClass(classEditDTO);

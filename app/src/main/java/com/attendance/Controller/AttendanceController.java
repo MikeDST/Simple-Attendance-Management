@@ -45,6 +45,17 @@ public class AttendanceController {
         return new ResponseEntity<>(successDetails, HttpStatus.OK);
     }
 
+    @GetMapping("/student/attendances/{id}")
+    public ResponseEntity<Object> getMyAttendances(@PathVariable("id") UUID id) throws ResourceNotFoundException {
+        Collection<AttendanceDTO> attendances = attendanceService.getMyAttendances(id);
+        SuccessDetails successDetails = new SuccessDetails(
+                new Date(),
+                message.OPERATION_COMPLETED,
+                attendances
+        );
+        return new ResponseEntity<>(successDetails, HttpStatus.OK);
+    }
+
     @PostMapping("/attendance/create")
     public ResponseEntity<Object> createAttendance(@RequestBody @Valid AttendanceEditDTO attendanceEditDTO) throws ResourceNotFoundException {
         attendanceService.createAttendance(attendanceEditDTO);
