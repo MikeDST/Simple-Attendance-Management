@@ -7,6 +7,7 @@ import com.attendance.Exception.ResourceNotFoundException;
 import com.attendance.Mapper.MapStructMapper;
 import com.attendance.Repository.SubjectRepository;
 import com.attendance.ServiceInterface.SubjectService;
+import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -26,8 +27,9 @@ public class SubjectServiceImpl implements SubjectService {
         subjectRepository.saveAndFlush(MapStructMapper.MAPPER.toEntity(subjectDTO));
     }
 
+    @SneakyThrows
     @Override
-    public void updateSubject(UUID subjectId, SubjectDTO subjectDTO) throws ResourceNotFoundException {
+    public void updateSubject(UUID subjectId, SubjectDTO subjectDTO){
         Subject foundSubject = subjectRepository.findById(subjectId)
                 .orElseThrow(() -> new ResourceNotFoundException(message.SUBJECT_NOT_FOUND + subjectId));
 
@@ -35,22 +37,25 @@ public class SubjectServiceImpl implements SubjectService {
         subjectRepository.saveAndFlush(foundSubject);
     }
 
+    @SneakyThrows
     @Override
-    public void deleteSubject(UUID subjectId) throws ResourceNotFoundException {
+    public void deleteSubject(UUID subjectId){
         Subject foundSubject = subjectRepository.findById(subjectId)
                 .orElseThrow(() -> new ResourceNotFoundException(message.SUBJECT_NOT_FOUND + subjectId));
         subjectRepository.delete(foundSubject);
     }
 
+    @SneakyThrows
     @Override
-    public SubjectDTO getSubject(UUID subjectId) throws ResourceNotFoundException {
+    public SubjectDTO getSubject(UUID subjectId){
         Subject foundSubject = subjectRepository.findById(subjectId)
                 .orElseThrow(() -> new ResourceNotFoundException(message.SUBJECT_NOT_FOUND + subjectId));
         return MapStructMapper.MAPPER.toDto(foundSubject);
     }
 
+    @SneakyThrows
     @Override
-    public Collection<SubjectDTO> getSubjects() throws ResourceNotFoundException {
+    public Collection<SubjectDTO> getSubjects(){
         Collection<Subject> subjects = subjectRepository.findAll();
 
         if(subjects.isEmpty()){

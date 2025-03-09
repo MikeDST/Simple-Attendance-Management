@@ -8,8 +8,8 @@ import java.util.UUID;
 
 public interface SubjectService {
     void createSubject(SubjectDTO subjectDTO);
-    void updateSubject(UUID subjectId, SubjectDTO subjectDTO) throws ResourceNotFoundException;
-    void deleteSubject(UUID subjectId) throws ResourceNotFoundException;
-    SubjectDTO getSubject(UUID subjectId) throws ResourceNotFoundException;
-    Collection<SubjectDTO> getSubjects() throws ResourceNotFoundException;
+    void updateSubject(UUID subjectId, SubjectDTO subjectDTO);
+    void deleteSubject(UUID subjectId);
+    SubjectDTO getSubject(UUID subjectId);
+    Collection<SubjectDTO> getSubjects();
 }

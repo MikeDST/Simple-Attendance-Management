@@ -12,6 +12,7 @@ import com.attendance.Repository.ClassRepository;
 import com.attendance.Repository.SubjectRepository;
 import com.attendance.Repository.UserRepository;
 import com.attendance.ServiceInterface.ClassService;
+import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -35,8 +36,9 @@ public class ClassServiceImpl implements ClassService {
         return Objects.equals(user.getRole(), "TEACHER");
     }
 
+    @SneakyThrows
     @Override
-    public void createClass(ClassEditDTO classEditDTO) throws ResourceNotFoundException {
+    public void createClass(ClassEditDTO classEditDTO){
         AppUser teacher = userRepository.findById(classEditDTO.getTeacherId())
                         .orElseThrow(() -> new ResourceNotFoundException(message.USER_NOT_FOUND));
         if(!isTeacher(teacher)) throw new ResourceNotFoundException(message.IS_NOT_TEACHER);
@@ -51,8 +53,9 @@ public class ClassServiceImpl implements ClassService {
         classRepository.saveAndFlush(newClass);
     }
 
+    @SneakyThrows
     @Override
-    public void updateClass(UUID classId, ClassEditDTO classEditDTO) throws ResourceNotFoundException {
+    public void updateClass(UUID classId, ClassEditDTO classEditDTO){
         Class foundClass = classRepository.findById(classId)
                 .orElseThrow(() -> new ResourceNotFoundException(message.CLASS_NOT_FOUND + classId));
         AppUser teacher = userRepository.findById(classEditDTO.getTeacherId())
@@ -69,22 +72,25 @@ public class ClassServiceImpl implements ClassService {
         classRepository.saveAndFlush(foundClass);
     }
 
+    @SneakyThrows
     @Override
-    public void deleteClass(UUID classId) throws ResourceNotFoundException {
+    public void deleteClass(UUID classId){
         Class foundClass = classRepository.findById(classId)
                 .orElseThrow(() -> new ResourceNotFoundException(message.CLASS_NOT_FOUND + classId));
         classRepository.delete(foundClass);
     }
 
+    @SneakyThrows
     @Override
-    public ClassDTO getClass(UUID classId) throws ResourceNotFoundException {
+    public ClassDTO getClass(UUID classId){
         Class foundClass = classRepository.findById(classId)
                 .orElseThrow(() -> new ResourceNotFoundException(message.CLASS_NOT_FOUND + classId));
         return MapStructMapper.MAPPER.toDto(foundClass);
     }
 
+    @SneakyThrows
     @Override
-    public Collection<ClassDTO> getMyClasses(UUID myId) throws ResourceNotFoundException {
+    public Collection<ClassDTO> getMyClasses(UUID myId){
         AppUser teacher = userRepository.findById(myId)
                 .orElseThrow(() -> new ResourceNotFoundException(message.USER_NOT_FOUND));
         if(!isTeacher(teacher)) throw new ResourceNotFoundException(message.IS_NOT_TEACHER);
@@ -96,8 +102,9 @@ public class ClassServiceImpl implements ClassService {
         return classes.stream().map(MapStructMapper.MAPPER::toDto).collect(Collectors.toList());
     }
 
+    @SneakyThrows
     @Override
-    public Collection<ClassDTO> getClasses() throws ResourceNotFoundException {
+    public Collection<ClassDTO> getClasses(){
         Collection<Class> classes = classRepository.findAll();
 
         if (classes.isEmpty()) {

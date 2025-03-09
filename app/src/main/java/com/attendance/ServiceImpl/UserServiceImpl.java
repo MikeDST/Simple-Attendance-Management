@@ -1,6 +1,7 @@
 package com.attendance.ServiceImpl;
 
 import com.attendance.Common.Message;
+import com.attendance.DTO.ChangePasswordDTO;
 import com.attendance.DTO.RegisterDTO;
 import com.attendance.DTO.UserCreateDTO;
 import com.attendance.DTO.UserDTO;
@@ -9,11 +10,13 @@ import com.attendance.Exception.ResourceNotFoundException;
 import com.attendance.Mapper.MapStructMapper;
 import com.attendance.Repository.UserRepository;
 import com.attendance.ServiceInterface.UserService;
+import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Collection;
+import java.util.Objects;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -40,20 +43,18 @@ public class UserServiceImpl implements UserService {
     @Override
     public void createUser(UserCreateDTO createUserDTO) {
         if (userRepository.findByUserName(createUserDTO.getUsername()).isPresent()) {
-            System.out.println("hii");
             throw new RuntimeException("Username already taken");
         }
         if (userRepository.findByEmail(createUserDTO.getEmail()).isPresent()) {
-            System.out.println("hello");
             throw new RuntimeException("Email already in use");
         }
         createUserDTO.setPassword(passwordEncoder.encode(createUserDTO.getPassword()));
-        System.out.println("yooo");
         userRepository.saveAndFlush(MapStructMapper.MAPPER.createToEntity(createUserDTO));
     }
 
+    @SneakyThrows
     @Override
-    public void updateUser(UUID userId, RegisterDTO registerDTO) throws ResourceNotFoundException {
+    public void updateUser(UUID userId, RegisterDTO registerDTO){
         AppUser foundUser = userRepository.findById(userId)
                 .orElseThrow(() -> new ResourceNotFoundException(message.USER_NOT_FOUND + userId));
 
@@ -67,22 +68,43 @@ public class UserServiceImpl implements UserService {
         userRepository.saveAndFlush(foundUser);
     }
 
+    @SneakyThrows
     @Override
-    public void deleteUser(UUID userId) throws ResourceNotFoundException {
+    public void changePassword(UUID userId, ChangePasswordDTO changePasswordDTO){
+        AppUser foundUser = userRepository.findById(userId)
+                .orElseThrow(() -> new ResourceNotFoundException(message.USER_NOT_FOUND + userId));
+        if(!Objects.equals(foundUser.getPassword(), passwordEncoder.encode(changePasswordDTO.getCurrentPassword())))
+        {
+            throw new RuntimeException("Wrong password");
+        }
+        if(!Objects.equals(changePasswordDTO.getNewPassword(), changePasswordDTO.getNewPasswordConfirm()))
+        {
+            throw new RuntimeException("New password and confirmed password do not match");
+        }
+
+        foundUser.setPassword(changePasswordDTO.getNewPasswordConfirm());
+        userRepository.saveAndFlush(foundUser);
+    }
+
+    @SneakyThrows
+    @Override
+    public void deleteUser(UUID userId){
         AppUser foundUser = userRepository.findById(userId)
                 .orElseThrow(() -> new ResourceNotFoundException(message.USER_NOT_FOUND + userId));
         userRepository.delete(foundUser);
     }
 
+    @SneakyThrows
     @Override
-    public UserDTO getUser(UUID userId) throws ResourceNotFoundException {
+    public UserDTO getUser(UUID userId){
         AppUser foundUser = userRepository.findById(userId)
                 .orElseThrow(() -> new ResourceNotFoundException(message.USER_NOT_FOUND + userId));
         return MapStructMapper.MAPPER.toDto(foundUser);
     }
 
+    @SneakyThrows
     @Override
-    public Collection<UserDTO> getUsers() throws ResourceNotFoundException {
+    public Collection<UserDTO> getUsers(){
         Collection<AppUser> users = userRepository.findAll();
         if (users.isEmpty()) {
             throw new ResourceNotFoundException(message.NO_USER_FOUND);

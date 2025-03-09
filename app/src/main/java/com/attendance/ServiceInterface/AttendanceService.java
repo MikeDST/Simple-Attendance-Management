@@ -8,10 +8,10 @@ import java.util.Collection;
 import java.util.UUID;
 
 public interface AttendanceService {
-    void createAttendance(AttendanceEditDTO attendanceEditDTO) throws ResourceNotFoundException;
-    void updateAttendance(UUID attendanceId, AttendanceEditDTO attendanceEditDTO) throws ResourceNotFoundException;
-    void deleteAttendance(UUID attendanceId) throws ResourceNotFoundException;
-    AttendanceDTO getAttendance(UUID attendanceId) throws ResourceNotFoundException;
-    Collection<AttendanceDTO> getMyAttendances(UUID myId) throws ResourceNotFoundException;
-    Collection<AttendanceDTO> getAttendances() throws ResourceNotFoundException;
+    void createAttendance(AttendanceEditDTO attendanceEditDTO);
+    void updateAttendance(UUID attendanceId, AttendanceEditDTO attendanceEditDTO);
+    void deleteAttendance(UUID attendanceId);
+    AttendanceDTO getAttendance(UUID attendanceId);
+    Collection<AttendanceDTO> getMyAttendances(UUID myId);
+    Collection<AttendanceDTO> getAttendances();
 }

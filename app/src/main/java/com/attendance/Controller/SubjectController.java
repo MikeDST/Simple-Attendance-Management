@@ -23,7 +23,7 @@ public class SubjectController {
     private final Message message = new Message();
 
     @GetMapping("/subjects")
-    public ResponseEntity<Object> getAllSubjects() throws ResourceNotFoundException {
+    public ResponseEntity<Object> getAllSubjects(){
         Collection<SubjectDTO> subjects = subjectService.getSubjects();
         SuccessDetails successDetails = new SuccessDetails(
                 new Date(),
@@ -34,7 +34,7 @@ public class SubjectController {
     }
 
     @GetMapping("/subjects/{id}")
-    public ResponseEntity<Object> getSubject(@PathVariable("id") UUID id) throws ResourceNotFoundException {
+    public ResponseEntity<Object> getSubject(@PathVariable("id") UUID id){
         SubjectDTO subject = subjectService.getSubject(id);
         SuccessDetails successDetails = new SuccessDetails(
                 new Date(),
@@ -55,7 +55,7 @@ public class SubjectController {
     }
 
     @PutMapping("/subject/update/{id}")
-    public ResponseEntity<Object> updateSubject(@PathVariable("id") UUID id, @RequestBody @Valid SubjectDTO subjectDTO) throws ResourceNotFoundException {
+    public ResponseEntity<Object> updateSubject(@PathVariable("id") UUID id, @RequestBody @Valid SubjectDTO subjectDTO){
         subjectService.updateSubject(id, subjectDTO);
         SuccessDetails successDetails = new SuccessDetails(
                 new Date(),
@@ -65,7 +65,7 @@ public class SubjectController {
     }
 
     @DeleteMapping("/subject/delete/{id}")
-    public ResponseEntity<Object> deleteSubject(@PathVariable("id") UUID id) throws ResourceNotFoundException {
+    public ResponseEntity<Object> deleteSubject(@PathVariable("id") UUID id){
         subjectService.deleteSubject(id);
         SuccessDetails successDetails = new SuccessDetails(
                 new Date(),

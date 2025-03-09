@@ -63,7 +63,7 @@ public class UserController {
     }
 
     @GetMapping("/users")
-    public ResponseEntity<Object> getAllUsers() throws ResourceNotFoundException {
+    public ResponseEntity<Object> getAllUsers(){
         Collection<UserDTO> users = userService.getUsers();
         SuccessDetails successDetails = new SuccessDetails(
                 new Date(),
@@ -74,7 +74,7 @@ public class UserController {
     }
 
     @GetMapping("/user/{id}")
-    public ResponseEntity<Object> getSubject(@PathVariable("id") UUID id) throws ResourceNotFoundException {
+    public ResponseEntity<Object> getUser(@PathVariable("id") UUID id){
         UserDTO user = userService.getUser(id);
         SuccessDetails successDetails = new SuccessDetails(
                 new Date(),
@@ -95,7 +95,7 @@ public class UserController {
     }
 
     @PutMapping(value = "/user/update/{id}")
-    public ResponseEntity<Object> updateSubject(@PathVariable("id") UUID id, @RequestBody @Valid RegisterDTO registerDTO) throws ResourceNotFoundException {
+    public ResponseEntity<Object> updateUser(@PathVariable("id") UUID id, @RequestBody @Valid RegisterDTO registerDTO){
         userService.updateUser(id, registerDTO);
         SuccessDetails successDetails = new SuccessDetails(
                 new Date(),
@@ -104,8 +104,18 @@ public class UserController {
         return new ResponseEntity<>(successDetails, HttpStatus.OK);
     }
 
+    @PutMapping(value = "/user/changepassword/{id}")
+    public ResponseEntity<Object> changePassword(@PathVariable("id") UUID id, @RequestBody @Valid ChangePasswordDTO changePasswordDTO){
+        userService.changePassword(id, changePasswordDTO);
+        SuccessDetails successDetails = new SuccessDetails(
+                new Date(),
+                message.USER_UPDATED,
+                null);
+        return new ResponseEntity<>(successDetails, HttpStatus.OK);
+    }
+
     @DeleteMapping(value = "/user/delete/{id}")
-    public ResponseEntity<Object> deleteSubject(@PathVariable("id") UUID id) throws ResourceNotFoundException {
+    public ResponseEntity<Object> deleteUser(@PathVariable("id") UUID id){
         userService.deleteUser(id);
         SuccessDetails successDetails = new SuccessDetails(
                 new Date(),

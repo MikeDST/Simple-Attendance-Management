@@ -24,7 +24,7 @@ public class ClassController {
     private final Message message = new Message();
 
     @GetMapping("/classes")
-    public ResponseEntity<Object> getAllClasses() throws ResourceNotFoundException {
+    public ResponseEntity<Object> getAllClasses(){
         Collection<ClassDTO> classes = classService.getClasses();
         SuccessDetails successDetails = new SuccessDetails(
                 new Date(),
@@ -35,7 +35,7 @@ public class ClassController {
     }
 
     @GetMapping("/class/{id}")
-    public ResponseEntity<Object> getClass(@PathVariable("id") UUID id) throws ResourceNotFoundException {
+    public ResponseEntity<Object> getClass(@PathVariable("id") UUID id){
         ClassDTO classDTO = classService.getClass(id);
         SuccessDetails successDetails = new SuccessDetails(
                 new Date(),
@@ -46,7 +46,7 @@ public class ClassController {
     }
 
     @GetMapping("/teacher/classes/{id}")
-    public ResponseEntity<Object> getMyClasses(@PathVariable("id") UUID id) throws ResourceNotFoundException {
+    public ResponseEntity<Object> getMyClasses(@PathVariable("id") UUID id){
         Collection<ClassDTO> classes = classService.getMyClasses(id);
         SuccessDetails successDetails = new SuccessDetails(
                 new Date(),
@@ -57,7 +57,7 @@ public class ClassController {
     }
 
     @PostMapping("/class/create")
-    public ResponseEntity<Object> createClass(@RequestBody @Valid ClassEditDTO classEditDTO) throws ResourceNotFoundException {
+    public ResponseEntity<Object> createClass(@RequestBody @Valid ClassEditDTO classEditDTO){
         classService.createClass(classEditDTO);
         SuccessDetails successDetails = new SuccessDetails(
                 new Date(),
@@ -67,7 +67,7 @@ public class ClassController {
     }
 
     @PutMapping("/class/update/{id}")
-    public ResponseEntity<Object> updateClass(@PathVariable("id") UUID id, @RequestBody @Valid ClassEditDTO classEditDTO) throws ResourceNotFoundException {
+    public ResponseEntity<Object> updateClass(@PathVariable("id") UUID id, @RequestBody @Valid ClassEditDTO classEditDTO){
         classService.updateClass(id, classEditDTO);
         SuccessDetails successDetails = new SuccessDetails(
                 new Date(),
@@ -77,7 +77,7 @@ public class ClassController {
     }
 
     @DeleteMapping("/class/delete/{id}")
-    public ResponseEntity<Object> deleteClass(@PathVariable("id") UUID id) throws ResourceNotFoundException {
+    public ResponseEntity<Object> deleteClass(@PathVariable("id") UUID id){
         classService.deleteClass(id);
         SuccessDetails successDetails = new SuccessDetails(
                 new Date(),

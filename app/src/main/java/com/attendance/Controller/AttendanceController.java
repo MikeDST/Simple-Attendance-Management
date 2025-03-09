@@ -24,7 +24,7 @@ public class AttendanceController {
     private final Message message = new Message();
 
     @GetMapping("/attendances")
-    public ResponseEntity<Object> getAllAttendances() throws ResourceNotFoundException {
+    public ResponseEntity<Object> getAllAttendances(){
         Collection<AttendanceDTO> attendances = attendanceService.getAttendances();
         SuccessDetails successDetails = new SuccessDetails(
                 new Date(),
@@ -35,7 +35,7 @@ public class AttendanceController {
     }
 
     @GetMapping("/attendances/{id}")
-    public ResponseEntity<Object> getAttendance(@PathVariable("id") UUID id) throws ResourceNotFoundException {
+    public ResponseEntity<Object> getAttendance(@PathVariable("id") UUID id){
         AttendanceDTO attendance = attendanceService.getAttendance(id);
         SuccessDetails successDetails = new SuccessDetails(
                 new Date(),
@@ -46,7 +46,7 @@ public class AttendanceController {
     }
 
     @GetMapping("/student/attendances/{id}")
-    public ResponseEntity<Object> getMyAttendances(@PathVariable("id") UUID id) throws ResourceNotFoundException {
+    public ResponseEntity<Object> getMyAttendances(@PathVariable("id") UUID id){
         Collection<AttendanceDTO> attendances = attendanceService.getMyAttendances(id);
         SuccessDetails successDetails = new SuccessDetails(
                 new Date(),
@@ -57,7 +57,7 @@ public class AttendanceController {
     }
 
     @PostMapping("/attendance/create")
-    public ResponseEntity<Object> createAttendance(@RequestBody @Valid AttendanceEditDTO attendanceEditDTO) throws ResourceNotFoundException {
+    public ResponseEntity<Object> createAttendance(@RequestBody @Valid AttendanceEditDTO attendanceEditDTO){
         attendanceService.createAttendance(attendanceEditDTO);
         SuccessDetails successDetails = new SuccessDetails(
                 new Date(),
@@ -67,7 +67,7 @@ public class AttendanceController {
     }
 
     @PutMapping("/attendance/update/{id}")
-    public ResponseEntity<Object> updateAttendance(@PathVariable("id") UUID id, @RequestBody @Valid AttendanceEditDTO attendanceEditDTO) throws ResourceNotFoundException {
+    public ResponseEntity<Object> updateAttendance(@PathVariable("id") UUID id, @RequestBody @Valid AttendanceEditDTO attendanceEditDTO){
         attendanceService.updateAttendance(id, attendanceEditDTO);
         SuccessDetails successDetails = new SuccessDetails(
                 new Date(),
@@ -77,7 +77,7 @@ public class AttendanceController {
     }
 
     @DeleteMapping("/attendance/delete/{id}")
-    public ResponseEntity<Object> deleteAttendance(@PathVariable("id") UUID id) throws ResourceNotFoundException {
+    public ResponseEntity<Object> deleteAttendance(@PathVariable("id") UUID id){
         attendanceService.deleteAttendance(id);
         SuccessDetails successDetails = new SuccessDetails(
                 new Date(),
