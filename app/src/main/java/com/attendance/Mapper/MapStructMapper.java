@@ -12,9 +12,13 @@ public interface MapStructMapper {
     MapStructMapper MAPPER = Mappers.getMapper(MapStructMapper.class);
     // Entity to DTO
     BeanDTO toDto(Bean bean);
+
     UserDTO toDto(AppUser appUser);
+
     ClassDTO toDto(Class aClass);
+
     SubjectDTO toDto(Subject subject);
+
     AttendanceDTO toDto(Attendance attendance);
 
     // DTO to Entity
@@ -23,7 +27,14 @@ public interface MapStructMapper {
     @Mapping(target = "role", expression = "java(\"STUDENT\")")
     AppUser registerToEntity(RegisterDTO registerDTO);
     AppUser toEntity(UserDTO userDTO);
+    @Mapping(source = "username", target = "userName")
+    AppUser createToEntity(UserCreateDTO userCreateDTO);
+
     Class toEntity(ClassDTO classDTO);
+    Class editToEntity(ClassEditDTO classEditDTO);
+
     Subject toEntity(SubjectDTO subjectDTO);
+
     Attendance toEntity(AttendanceDTO attendanceDTO);
+    Attendance editToEntity(AttendanceEditDTO attendanceEditDTO);
 }

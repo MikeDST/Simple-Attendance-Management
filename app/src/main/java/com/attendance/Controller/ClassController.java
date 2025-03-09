@@ -3,6 +3,7 @@ package com.attendance.Controller;
 import com.attendance.Common.Message;
 import com.attendance.Common.SuccessDetails;
 import com.attendance.DTO.ClassDTO;
+import com.attendance.DTO.ClassEditDTO;
 import com.attendance.Exception.ResourceNotFoundException;
 import com.attendance.ServiceInterface.ClassService;
 import jakarta.validation.Valid;
@@ -33,7 +34,7 @@ public class ClassController {
         return new ResponseEntity<>(successDetails, HttpStatus.OK);
     }
 
-    @GetMapping("/classes/{id}")
+    @GetMapping("/class/{id}")
     public ResponseEntity<Object> getClass(@PathVariable("id") UUID id) throws ResourceNotFoundException {
         ClassDTO classDTO = classService.getClass(id);
         SuccessDetails successDetails = new SuccessDetails(
@@ -45,8 +46,8 @@ public class ClassController {
     }
 
     @PostMapping("/class/create")
-    public ResponseEntity<Object> createClass(@RequestBody @Valid ClassDTO classDTO) {
-        classService.createClass(classDTO);
+    public ResponseEntity<Object> createClass(@RequestBody @Valid ClassEditDTO classEditDTO) throws ResourceNotFoundException {
+        classService.createClass(classEditDTO);
         SuccessDetails successDetails = new SuccessDetails(
                 new Date(),
                 message.CLASS_CREATED,
@@ -55,8 +56,8 @@ public class ClassController {
     }
 
     @PutMapping("/class/update/{id}")
-    public ResponseEntity<Object> updateClass(@PathVariable("id") UUID id, @RequestBody @Valid ClassDTO classDTO) throws ResourceNotFoundException {
-        classService.updateClass(id, classDTO);
+    public ResponseEntity<Object> updateClass(@PathVariable("id") UUID id, @RequestBody @Valid ClassEditDTO classEditDTO) throws ResourceNotFoundException {
+        classService.updateClass(id, classEditDTO);
         SuccessDetails successDetails = new SuccessDetails(
                 new Date(),
                 message.CLASS_UPDATED,

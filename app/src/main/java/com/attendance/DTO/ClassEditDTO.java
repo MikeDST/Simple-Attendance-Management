@@ -14,10 +14,7 @@ import java.util.UUID;
 @AllArgsConstructor
 @Getter
 @Setter
-public class ClassDTO {
-    @JsonProperty("id")
-    private UUID id;
-
+public class ClassEditDTO {
     @JsonProperty("name")
     private String name;
 
@@ -25,9 +22,9 @@ public class ClassDTO {
     @PastOrPresent(message = "Publish date must be in the past or present")
     private LocalDateTime startDate;
 
-    @JsonProperty("teacher")
-    private UserDTO teacher;
+    @JsonProperty("teacherid")
+    private UUID teacherId;
 
-    @JsonProperty("subject")
-    private SubjectDTO subject;
+    @JsonProperty("subjectid")
+    private UUID subjectId;
 }

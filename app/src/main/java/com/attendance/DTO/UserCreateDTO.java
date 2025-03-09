@@ -7,34 +7,37 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 
-import java.util.UUID;
-
 @RequiredArgsConstructor
 @AllArgsConstructor
 @Getter
 @Setter
-public class UserDTO {
-    @JsonProperty("id")
-    private UUID id;
-
+public class UserCreateDTO {
+    @NotNull
     @JsonProperty("username")
-    private String userName;
+    private String username;
 
+    @NotNull
+    // @Email(message = "Email is not valid", regexp = "[a-z0-9._%+-]+@[a-z0-9.-]+\\\\.[a-z]{2,3}", flags = Pattern.Flag.CASE_INSENSITIVE)
     @JsonProperty("email")
     private String email;
 
+    @NotNull
     @JsonProperty("password")
     private String password;
 
+    @NotNull
     @JsonProperty("firstname")
     private String firstName;
 
+    @NotNull
     @JsonProperty("lastname")
     private String lastName;
 
+    @NotNull
     @JsonProperty("phone")
     private String phone;
 
+    @NotNull
     @JsonProperty("role")
     private String role;
 }

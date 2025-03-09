@@ -2,12 +2,8 @@ package com.attendance.Controller;
 
 import com.attendance.Common.Message;
 import com.attendance.Common.SuccessDetails;
-import com.attendance.DTO.LogInDTO;
-import com.attendance.DTO.RegisterDTO;
-import com.attendance.DTO.UserDTO;
-import com.attendance.Entity.AppUser;
+import com.attendance.DTO.*;
 import com.attendance.Exception.ResourceNotFoundException;
-import com.attendance.Repository.UserRepository;
 import com.attendance.ServiceInterface.UserService;
 import com.attendance.authen.AuthenticationService;
 import jakarta.servlet.http.HttpServletRequest;
@@ -21,13 +17,11 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Collection;
 import java.util.Date;
+import java.util.UUID;
 
 
 @RestController
@@ -37,15 +31,11 @@ public class UserController {
     @Autowired
     private AuthenticationManager authenticationManager;
     private AuthenticationService authenticationService;
-    private UserRepository userRepository;
     private PasswordEncoder passwordEncoder;
     private final Message message = new Message();
 
     @PostMapping("/register")
     public ResponseEntity<Object> register(@RequestBody @Valid RegisterDTO registerDTO) {
-//        request.setPassword(passwordEncoder.encode(request.getPassword()));
-//        request.setRole("STUDENT");
-//        return ResponseEntity.ok(userRepository.saveAndFlush(request));
         userService.registerUser(registerDTO);
         SuccessDetails successDetails = new SuccessDetails(
                 new Date(),
@@ -80,6 +70,47 @@ public class UserController {
                 message.OPERATION_COMPLETED,
                 users
         );
+        return new ResponseEntity<>(successDetails, HttpStatus.OK);
+    }
+
+    @GetMapping("/user/{id}")
+    public ResponseEntity<Object> getSubject(@PathVariable("id") UUID id) throws ResourceNotFoundException {
+        UserDTO user = userService.getUser(id);
+        SuccessDetails successDetails = new SuccessDetails(
+                new Date(),
+                message.OPERATION_COMPLETED,
+                user
+        );
+        return new ResponseEntity<>(successDetails, HttpStatus.OK);
+    }
+
+    @PostMapping("/user/create")
+    public ResponseEntity<Object> createUser(@RequestBody @Valid UserCreateDTO userCreateDTO) {
+        userService.createUser(userCreateDTO);
+        SuccessDetails successDetails = new SuccessDetails(
+                new Date(),
+                message.USER_CREATED,
+                null);
+        return new ResponseEntity<>(successDetails, HttpStatus.CREATED);
+    }
+
+    @PutMapping(value = "/user/update/{id}")
+    public ResponseEntity<Object> updateSubject(@PathVariable("id") UUID id, @RequestBody @Valid RegisterDTO registerDTO) throws ResourceNotFoundException {
+        userService.updateUser(id, registerDTO);
+        SuccessDetails successDetails = new SuccessDetails(
+                new Date(),
+                message.USER_UPDATED,
+                null);
+        return new ResponseEntity<>(successDetails, HttpStatus.OK);
+    }
+
+    @DeleteMapping(value = "/user/delete/{id}")
+    public ResponseEntity<Object> deleteSubject(@PathVariable("id") UUID id) throws ResourceNotFoundException {
+        userService.deleteUser(id);
+        SuccessDetails successDetails = new SuccessDetails(
+                new Date(),
+                message.USER_DELETED,
+                null);
         return new ResponseEntity<>(successDetails, HttpStatus.OK);
     }
 }

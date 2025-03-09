@@ -54,7 +54,7 @@ public class SubjectController {
         return new ResponseEntity<>(successDetails, HttpStatus.CREATED);
     }
 
-    @PutMapping(value = "/subject/update/{id}")
+    @PutMapping("/subject/update/{id}")
     public ResponseEntity<Object> updateSubject(@PathVariable("id") UUID id, @RequestBody @Valid SubjectDTO subjectDTO) throws ResourceNotFoundException {
         subjectService.updateSubject(id, subjectDTO);
         SuccessDetails successDetails = new SuccessDetails(
@@ -64,7 +64,7 @@ public class SubjectController {
         return new ResponseEntity<>(successDetails, HttpStatus.OK);
     }
 
-    @DeleteMapping(value = "/subject/delete/{id}")
+    @DeleteMapping("/subject/delete/{id}")
     public ResponseEntity<Object> deleteSubject(@PathVariable("id") UUID id) throws ResourceNotFoundException {
         subjectService.deleteSubject(id);
         SuccessDetails successDetails = new SuccessDetails(

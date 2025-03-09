@@ -32,7 +32,6 @@ public class SubjectServiceImpl implements SubjectService {
         Subject foundSubject = subjectRepository.findById(subjectId)
                 .orElseThrow(() -> new ResourceNotFoundException(message.SUBJECT_NOT_FOUND + subjectId));
 
-        // Subject subject = mapStructMapper.MAPPER.toEntity(subjectDTO);
         foundSubject.setName(subjectDTO.getName());
         subjectRepository.saveAndFlush(foundSubject);
     }

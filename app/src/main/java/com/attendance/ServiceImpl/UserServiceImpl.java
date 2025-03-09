@@ -2,6 +2,7 @@ package com.attendance.ServiceImpl;
 
 import com.attendance.Common.Message;
 import com.attendance.DTO.RegisterDTO;
+import com.attendance.DTO.UserCreateDTO;
 import com.attendance.DTO.UserDTO;
 import com.attendance.Entity.AppUser;
 import com.attendance.Exception.ResourceNotFoundException;
@@ -20,6 +21,7 @@ import java.util.stream.Collectors;
 public class UserServiceImpl implements UserService {
     @Autowired
     private UserRepository userRepository;
+    @Autowired
     private PasswordEncoder passwordEncoder;
     private MapStructMapper mapStructMapper;
     private final Message message = new Message();
@@ -37,11 +39,32 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void updateUser(UUID userId, UserDTO userDTO) throws ResourceNotFoundException {
+    public void createUser(UserCreateDTO createUserDTO) {
+        if (userRepository.findByUserName(createUserDTO.getUsername()).isPresent()) {
+            System.out.println("hii");
+            throw new RuntimeException("Username already taken");
+        }
+        if (userRepository.findByEmail(createUserDTO.getEmail()).isPresent()) {
+            System.out.println("hello");
+            throw new RuntimeException("Email already in use");
+        }
+        createUserDTO.setPassword(passwordEncoder.encode(createUserDTO.getPassword()));
+        System.out.println("yooo");
+        userRepository.saveAndFlush(mapStructMapper.MAPPER.createToEntity(createUserDTO));
+    }
+
+    @Override
+    public void updateUser(UUID userId, RegisterDTO registerDTO) throws ResourceNotFoundException {
         AppUser foundUser = userRepository.findById(userId)
                 .orElseThrow(() -> new ResourceNotFoundException(message.USER_NOT_FOUND + userId));
 
-        // foundUser.setName(userDTO.getName());
+        foundUser.setUserName(registerDTO.getUsername());
+        foundUser.setEmail(registerDTO.getEmail());
+        foundUser.setPassword(registerDTO.getPassword());
+        foundUser.setFirstName(registerDTO.getFirstName());
+        foundUser.setLastName(registerDTO.getLastName());
+        foundUser.setPhone(registerDTO.getPhone());
+
         userRepository.saveAndFlush(foundUser);
     }
 

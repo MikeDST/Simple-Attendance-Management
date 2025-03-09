@@ -3,6 +3,7 @@ package com.attendance.Controller;
 import com.attendance.Common.Message;
 import com.attendance.Common.SuccessDetails;
 import com.attendance.DTO.AttendanceDTO;
+import com.attendance.DTO.AttendanceEditDTO;
 import com.attendance.Exception.ResourceNotFoundException;
 import com.attendance.ServiceInterface.AttendanceService;
 import jakarta.validation.Valid;
@@ -45,8 +46,8 @@ public class AttendanceController {
     }
 
     @PostMapping("/attendance/create")
-    public ResponseEntity<Object> createAttendance(@RequestBody @Valid AttendanceDTO attendanceDTO) {
-        attendanceService.createAttendance(attendanceDTO);
+    public ResponseEntity<Object> createAttendance(@RequestBody @Valid AttendanceEditDTO attendanceEditDTO) throws ResourceNotFoundException {
+        attendanceService.createAttendance(attendanceEditDTO);
         SuccessDetails successDetails = new SuccessDetails(
                 new Date(),
                 message.ATTENDANCE_CREATED,
@@ -55,8 +56,8 @@ public class AttendanceController {
     }
 
     @PutMapping("/attendance/update/{id}")
-    public ResponseEntity<Object> updateAttendance(@PathVariable("id") UUID id, @RequestBody @Valid AttendanceDTO attendanceDTO) throws ResourceNotFoundException {
-        attendanceService.updateAttendance(id, attendanceDTO);
+    public ResponseEntity<Object> updateAttendance(@PathVariable("id") UUID id, @RequestBody @Valid AttendanceEditDTO attendanceEditDTO) throws ResourceNotFoundException {
+        attendanceService.updateAttendance(id, attendanceEditDTO);
         SuccessDetails successDetails = new SuccessDetails(
                 new Date(),
                 message.ATTENDANCE_UPDATED,
